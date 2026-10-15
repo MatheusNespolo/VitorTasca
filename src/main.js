@@ -7,7 +7,7 @@ import { readNiche, writeNiche } from './router.js';
 import { renderGrid } from './ui/grid.js';
 import { renderFilters } from './ui/filters.js';
 import { openPlayer } from './ui/player.js';
-import { renderHero, pickHeroImage } from './ui/hero.js';
+import { renderHero, pickHeroSources } from './ui/hero.js';
 import { renderClients } from './ui/clients.js';
 import { initSpotlight } from './ui/spotlight.js';
 
@@ -26,7 +26,8 @@ function render() {
 }
 
 const latest = latestProject(projects);
-renderHero($('hero-media'), { image: pickHeroImage(config, latest), mp4: config.showreelMp4, alt: '', label: config.name });
+const heroSrc = pickHeroSources(config, latest);
+renderHero($('hero-media'), { image: heroSrc.src, fallback: heroSrc.fallback, mp4: config.showreelMp4, alt: '', label: config.name });
 $('hero-portrait').src = config.aboutImage;
 const latestBtn = $('hero-latest');
 if (latest && !config.heroImage.trim()) {

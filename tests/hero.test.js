@@ -39,3 +39,21 @@ it('pickHeroImage falls back to the showreel thumbnail', () => {
   expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' }, null)).toBe(T('DRcc5s0UkFE'));
   expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe(T('DRcc5s0UkFE'));
 });
+import { pickHeroSources } from '../src/ui/hero.js';
+it('pickHeroSources prefers the vertical oar2 thumbnail with maxres fallback', () => {
+  expect(pickHeroSources({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' }, { youtubeId: 'TmJ4nGZJyJ0' }))
+    .toEqual({ src: 'https://i.ytimg.com/vi/TmJ4nGZJyJ0/oar2.jpg', fallback: 'https://i.ytimg.com/vi/TmJ4nGZJyJ0/maxresdefault.jpg' });
+  expect(pickHeroSources({ heroImage: './img/c.jpg', showreelYoutubeId: 'x' }, null)).toEqual({ src: './img/c.jpg', fallback: '' });
+});
+it('hero photo swaps to fallback when YouTube returns the 120px placeholder or errors', () => {
+  const c = document.createElement('div');
+  renderHero(c, { image: 'https://i.ytimg.com/vi/a/oar2.jpg', fallback: 'https://i.ytimg.com/vi/a/maxresdefault.jpg', mp4: '', alt: '' });
+  const img = c.querySelector('img');
+  Object.defineProperty(img, 'naturalWidth', { value: 120 });
+  img.dispatchEvent(new Event('load'));
+  expect(img.src).toBe('https://i.ytimg.com/vi/a/maxresdefault.jpg');
+  const c2 = document.createElement('div');
+  renderHero(c2, { image: 'https://i.ytimg.com/vi/b/oar2.jpg', fallback: 'https://i.ytimg.com/vi/b/maxresdefault.jpg', mp4: '', alt: '' });
+  c2.querySelector('img').dispatchEvent(new Event('error'));
+  expect(c2.querySelector('img').src).toBe('https://i.ytimg.com/vi/b/maxresdefault.jpg');
+});
