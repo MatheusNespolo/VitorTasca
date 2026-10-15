@@ -1,0 +1,5 @@
+:root{
+  --bg:#08080a; --surface:#121216; --text:#f4f4f5; --muted:#a1a1aa; --line:#26262b;
+  --accent:#ff2d3a; --accent-rgb:255 45 58; --on-accent:#0b0b0d; --radius:12px;
+  --font-display:'Anton',Impact,'Arial Narrow',sans-serif; --font-body:'Inter',system-ui,sans-serif;
+}
