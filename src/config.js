@@ -6,7 +6,8 @@ export const config = {
   instagram: 'vitortasca.filmmaker',
   showreelYoutubeId: 'DRcc5s0UkFE',
   showreelMp4: '', // ex.: './video/showreel.mp4' — quando preenchido, o hero vira vídeo
-  heroImage: './img/vitor-hero.jpg',
+  heroImage: '', // capa da entrada; vazio = miniatura do showreel no YouTube. Ex.: './img/capa.jpg'
+  aboutImage: './img/vitor-hero.jpg', // foto da seção Sobre
   yearsExperience: 3,
   heroText: 'Filmmaker com mais de 3 anos de experiência, especializado em capturar momentos que falam. Olhar atento aos detalhes sutis e paixão por contar histórias visuais que revelam a essência autêntica de cada projeto.',
 };

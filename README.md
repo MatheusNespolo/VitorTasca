@@ -24,6 +24,18 @@ Edite `src/data/projects.js` e copie uma linha do array `PROJECTS`:
 - `featured: true`: o trabalho aparece primeiro na listagem.
 - `client` é opcional.
 
+## Como trocar a capa da entrada
+
+A entrada mostra, nesta ordem de prioridade:
+
+1. o vídeo `showreelMp4`, se preenchido (veja abaixo);
+2. a foto `heroImage`, se preenchida;
+3. a miniatura do showreel no YouTube (`showreelYoutubeId`), quando `heroImage` está vazio.
+
+Para usar uma foto própria: coloque o arquivo em `public/img/` (horizontal, ~1920 px de largura, JPG até ~400 KB) e preencha `heroImage: './img/nome-da-foto.jpg'` em `src/config.js`.
+
+A foto da seção "Sobre" é independente: `aboutImage` em `src/config.js`.
+
 ## Como ativar o showreel em vídeo no hero
 
 1. Coloque o arquivo em `public/video/showreel.mp4` (15–30 s, no máximo 8 MB, H.264, sem som).

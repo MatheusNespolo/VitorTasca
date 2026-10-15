@@ -1,3 +1,5 @@
+import { thumbUrl } from '../domain/youtube.js';
+export const pickHeroImage = ({ heroImage, showreelYoutubeId }) => (heroImage ?? '').trim() || thumbUrl(showreelYoutubeId);
 function photo(image, alt) {
   const img = document.createElement('img'); img.src = image; img.alt = alt;
   img.setAttribute('fetchpriority', 'high'); img.className = 'hero-img'; return img;

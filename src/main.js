@@ -7,7 +7,7 @@ import { readNiche, writeNiche } from './router.js';
 import { renderGrid } from './ui/grid.js';
 import { renderFilters } from './ui/filters.js';
 import { openPlayer } from './ui/player.js';
-import { renderHero } from './ui/hero.js';
+import { renderHero, pickHeroImage } from './ui/hero.js';
 import { renderClients } from './ui/clients.js';
 import { initSpotlight } from './ui/spotlight.js';
 
@@ -25,13 +25,13 @@ function render() {
   renderGrid($('grid'), filterByNiche(projects, active), NICHES, p => openPlayer(p.youtubeId, p.client ? `${p.title} — ${p.client}` : p.title));
 }
 
-renderHero($('hero-media'), { image: config.heroImage, mp4: config.showreelMp4, alt: '', label: config.name });
+renderHero($('hero-media'), { image: pickHeroImage(config), mp4: config.showreelMp4, alt: '', label: config.name });
 $('hero-name').textContent = config.name;
 $('hero-text').textContent = config.heroText;
 $('btn-showreel').addEventListener('click', () => openPlayer(config.showreelYoutubeId, `Showreel — ${config.name}`));
 $('btn-contact').href = wa;
 for (const id of ['btn-contact', 'contact-wa', 'wa-float']) { $(id).target = '_blank'; $(id).rel = 'noopener'; }
-$('about-photo').src = config.heroImage;
+$('about-photo').src = config.aboutImage;
 $('about-text').textContent = config.heroText;
 const s = stats(projects, config);
 $('stat-years').textContent = `${s.years}+`; $('stat-projects').textContent = String(s.projects); $('stat-niches').textContent = String(s.niches);

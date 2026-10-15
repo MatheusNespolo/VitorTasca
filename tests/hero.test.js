@@ -27,3 +27,11 @@ it('decorative photo (alt "") keeps video aria-label from label', () => {
   renderHero(c, { image: './a.jpg', mp4: './v.mp4', alt: '', label: 'Vitor' });
   expect(c.querySelector('video').getAttribute('aria-label')).toBe('Vitor');
 });
+import { pickHeroImage } from '../src/ui/hero.js';
+it('pickHeroImage uses heroImage when set', () => {
+  expect(pickHeroImage({ heroImage: './img/capa.jpg', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('./img/capa.jpg');
+});
+it('pickHeroImage falls back to the showreel YouTube thumbnail', () => {
+  expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('https://i.ytimg.com/vi/DRcc5s0UkFE/maxresdefault.jpg');
+  expect(pickHeroImage({ heroImage: '   ', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('https://i.ytimg.com/vi/DRcc5s0UkFE/maxresdefault.jpg');
+});
