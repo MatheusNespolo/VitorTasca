@@ -28,10 +28,14 @@ it('decorative photo (alt "") keeps video aria-label from label', () => {
   expect(c.querySelector('video').getAttribute('aria-label')).toBe('Vitor');
 });
 import { pickHeroImage } from '../src/ui/hero.js';
+const T = id => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
 it('pickHeroImage uses heroImage when set', () => {
-  expect(pickHeroImage({ heroImage: './img/capa.jpg', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('./img/capa.jpg');
+  expect(pickHeroImage({ heroImage: ' ./img/capa.jpg ', showreelYoutubeId: 'DRcc5s0UkFE' }, { youtubeId: 'LATESTxxxxx' })).toBe('./img/capa.jpg');
 });
-it('pickHeroImage falls back to the showreel YouTube thumbnail', () => {
-  expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('https://i.ytimg.com/vi/DRcc5s0UkFE/maxresdefault.jpg');
-  expect(pickHeroImage({ heroImage: '   ', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe('https://i.ytimg.com/vi/DRcc5s0UkFE/maxresdefault.jpg');
+it('pickHeroImage uses the latest work thumbnail', () => {
+  expect(pickHeroImage({ heroImage: '   ', showreelYoutubeId: 'DRcc5s0UkFE' }, { youtubeId: 'TmJ4nGZJyJ0' })).toBe(T('TmJ4nGZJyJ0'));
+});
+it('pickHeroImage falls back to the showreel thumbnail', () => {
+  expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' }, null)).toBe(T('DRcc5s0UkFE'));
+  expect(pickHeroImage({ heroImage: '', showreelYoutubeId: 'DRcc5s0UkFE' })).toBe(T('DRcc5s0UkFE'));
 });

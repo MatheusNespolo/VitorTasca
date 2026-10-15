@@ -25,9 +25,23 @@ h2{font-size:clamp(2rem,6vw,3.25rem);margin-bottom:1.5rem}
 .hero-grid{position:absolute;inset:0;z-index:1;pointer-events:none}
 .hero-blob{top:-20vmax;right:-20vmax;z-index:1;opacity:.8}
 .hero-media{position:absolute;inset:0;z-index:0}
-.hero-media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 140px rgb(var(--accent-rgb)/.35);background:linear-gradient(to top,var(--bg) 5%,rgb(8 8 10/.55) 45%,rgb(8 8 10/.25))}
+.hero-media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 140px rgb(var(--accent-rgb)/.35);background:linear-gradient(to top,var(--bg) 5%,rgb(8 8 10/.72) 45%,rgb(8 8 10/.55))}
 .hero-media img,.hero-media video{width:100%;height:100%;object-fit:cover;object-position:center top}
+/* retrato de Vitor sobre o fundo */
+.hero{align-content:end;row-gap:1.25rem;padding-bottom:4.5rem}
+.hero-portrait{position:relative;z-index:2;margin:0;width:min(55%,260px);aspect-ratio:4/5;border-radius:1rem;overflow:hidden;border:1px solid rgb(var(--accent-rgb)/.55);box-shadow:0 0 32px rgb(var(--accent-rgb)/.35),0 12px 40px rgb(0 0 0/.5)}
+.hero-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .hero-copy{position:relative;z-index:2;max-width:760px}
+.hero-latest{position:absolute;z-index:3;left:1.25rem;right:1.25rem;bottom:1.25rem;width:max-content;max-width:calc(100% - 2.5rem);padding:.5rem 1rem;border-radius:999px;border:1px solid rgb(255 255 255/.28);background:rgb(8 8 10/.72);color:#fff;font:inherit;font-size:.85rem;line-height:1.3;cursor:pointer;text-align:left;transition:border-color .2s,background .2s}
+.hero-latest:hover{border-color:rgb(var(--accent-rgb)/.9);background:rgb(8 8 10/.88)}
+.hero-latest:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hero-latest[hidden]{display:none}
+@media (min-width:900px){
+  .hero{grid-template-columns:minmax(0,2fr) minmax(0,3fr);column-gap:4vw;align-items:center;padding:7rem 5vw 5rem}
+  .hero-portrait{width:100%;max-width:520px;justify-self:end}
+  .hero-latest{left:5vw;bottom:1.75rem}
+}
+@media (prefers-reduced-motion:reduce){.hero-latest{transition:none}}
 #hero-name{font-size:clamp(3.5rem,16vw,9rem)}
 #hero-text{max-width:56ch;color:var(--text);margin:1rem 0 1.5rem;font-size:1.05rem}
 .hero-actions{display:flex;flex-wrap:wrap;gap:.75rem}

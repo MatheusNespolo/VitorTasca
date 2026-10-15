@@ -2,7 +2,7 @@ import './styles/tokens.css'; import './styles/base.css'; import './styles/effec
 import { config } from './config.js';
 import { NICHES } from './data/niches.js';
 import { PROJECTS } from './data/projects.js';
-import { normalizeProjects, filterByNiche, nichesWithProjects, uniqueClients, stats } from './domain/projects.js';
+import { normalizeProjects, filterByNiche, nichesWithProjects, uniqueClients, stats, latestProject } from './domain/projects.js';
 import { readNiche, writeNiche } from './router.js';
 import { renderGrid } from './ui/grid.js';
 import { renderFilters } from './ui/filters.js';
@@ -25,7 +25,16 @@ function render() {
   renderGrid($('grid'), filterByNiche(projects, active), NICHES, p => openPlayer(p.youtubeId, p.client ? `${p.title} — ${p.client}` : p.title));
 }
 
-renderHero($('hero-media'), { image: pickHeroImage(config), mp4: config.showreelMp4, alt: '', label: config.name });
+const latest = latestProject(projects);
+renderHero($('hero-media'), { image: pickHeroImage(config, latest), mp4: config.showreelMp4, alt: '', label: config.name });
+$('hero-portrait').src = config.aboutImage;
+const latestBtn = $('hero-latest');
+if (latest && !config.heroImage.trim()) {
+  const label = latest.client ? `${latest.title} — ${latest.client}` : latest.title;
+  latestBtn.textContent = `Trabalho mais recente: ${label}`;
+  latestBtn.addEventListener('click', () => openPlayer(latest.youtubeId, label));
+  latestBtn.hidden = false;
+} else latestBtn.hidden = true;
 $('hero-name').textContent = config.name;
 $('hero-text').textContent = config.heroText;
 $('btn-showreel').addEventListener('click', () => openPlayer(config.showreelYoutubeId, `Showreel — ${config.name}`));

@@ -26,15 +26,18 @@ Edite `src/data/projects.js` e copie uma linha do array `PROJECTS`:
 
 ## Como trocar a capa da entrada
 
-A entrada mostra, nesta ordem de prioridade:
+O fundo da entrada mostra, nesta ordem de prioridade:
 
 1. o vídeo `showreelMp4`, se preenchido (veja abaixo);
 2. a foto `heroImage`, se preenchida;
-3. a miniatura do showreel no YouTube (`showreelYoutubeId`), quando `heroImage` está vazio.
+3. a miniatura do trabalho mais recente que tenha `date` em `src/data/projects.js`;
+4. a miniatura do showreel no YouTube (`showreelYoutubeId`).
 
 Para usar uma foto própria: coloque o arquivo em `public/img/` (horizontal, ~1920 px de largura, JPG até ~400 KB) e preencha `heroImage: './img/nome-da-foto.jpg'` em `src/config.js`.
 
-A foto da seção "Sobre" é independente: `aboutImage` em `src/config.js`.
+Para marcar a data de um trabalho, acrescente `date: '2026-06'` (ou `'2026-06-15'`) à linha dele em `src/data/projects.js`. O trabalho com a data mais recente vira o fundo da capa e aparece na etiqueta "Trabalho mais recente" (que abre o vídeo). Sem nenhuma data, vale o primeiro da lista. A etiqueta some quando `heroImage` está preenchido.
+
+A foto de Vitor sobreposta ao fundo vem de `aboutImage` em `src/config.js` (a mesma da seção "Sobre").
 
 ## Como ativar o showreel em vídeo no hero
 
@@ -67,3 +70,7 @@ Nichos sem trabalhos cadastrados não aparecem como filtro.
 - [ ] Confirmar o showreel (ID do YouTube em `config.js` e, se houver, o MP4).
 - [ ] Revisar textos, contatos (WhatsApp, e-mail, Instagram) e lista de trabalhos.
 - [ ] Rodar o Lighthouse em modo mobile e confirmar nota >= 90.
+
+## Futuro
+
+Trabalho mais recente automático via Instagram Graph API (exige conta profissional ligada a uma Página do Facebook e um Cloudflare Worker): previsto como projeto separado.

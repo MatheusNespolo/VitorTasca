@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { normalizeProjects, filterByNiche, nichesWithProjects, uniqueClients, stats } from '../src/domain/projects.js';
+import { normalizeProjects, latestProject, filterByNiche, nichesWithProjects, uniqueClients, stats } from '../src/domain/projects.js';
 import { NICHES } from '../src/data/niches.js';
 import { PROJECTS } from '../src/data/projects.js';
 
@@ -13,7 +13,7 @@ describe('normalizeProjects', () => {
   it('resolves ids, sorts featured first (stable)', () => {
     const ps = normalizeProjects(raw);
     expect(ps.map(p => p.title)).toEqual(['B', 'C', 'A']);
-    expect(ps[2]).toEqual({ id: 'aaaaaaaaaaa', niche: 'eventos', title: 'A', client: 'X', youtubeId: 'aaaaaaaaaaa', featured: false });
+    expect(ps[2]).toEqual({ id: 'aaaaaaaaaaa', niche: 'eventos', title: 'A', client: 'X', youtubeId: 'aaaaaaaaaaa', featured: false, date: '' });
   });
   it.each([{ title: '' }, { niche: 'casamentos' }, { youtube: 'https://vimeo.com/1' }])('drops invalid %o', o => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -52,4 +52,30 @@ it('skips null/non-object entries without throwing', () => {
   const out = normalizeProjects([null, undefined, 'x', ok]);
   expect(out).toHaveLength(1); expect(out[0].title).toBe('T');
   expect(warn).toHaveBeenCalledTimes(3); warn.mockRestore();
+});
+
+describe('date + latestProject', () => {
+  const mk = (t, d, y) => ({ niche: 'eventos', title: t, youtube: y, ...(d === undefined ? {} : { date: d }) });
+  it('picks the greatest date, mixing YYYY-MM and YYYY-MM-DD', () => {
+    const ps = normalizeProjects([mk('A', '2025-03', 'aaaaaaaaaaa'), mk('B', '2026-01-15', 'bbbbbbbbbbb'), mk('C', '2026-01', 'ccccccccccc')]);
+    expect(latestProject(ps).title).toBe('B');
+  });
+  it('tie keeps the first', () => {
+    const ps = normalizeProjects([mk('A', '2026-01', 'aaaaaaaaaaa'), mk('B', '2026-01', 'bbbbbbbbbbb')]);
+    expect(latestProject(ps).title).toBe('A');
+  });
+  it('no dates -> first project', () => {
+    const ps = normalizeProjects([mk('A', undefined, 'aaaaaaaaaaa'), mk('B', undefined, 'bbbbbbbbbbb')]);
+    expect(latestProject(ps).title).toBe('A');
+  });
+  it('empty -> null', () => { expect(latestProject([])).toBeNull(); });
+  it('invalid date warns, keeps project, treated as undated', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const ps = normalizeProjects([mk('A', 'ontem', 'aaaaaaaaaaa'), mk('B', '2024-05', 'bbbbbbbbbbb')]);
+    expect(ps).toHaveLength(2); expect(ps[0].date).toBe(''); expect(warn).toHaveBeenCalledTimes(1);
+    expect(latestProject(ps).title).toBe('B'); warn.mockRestore();
+  });
+  it('bundled PROJECTS -> Pappa Gohan', () => {
+    expect(latestProject(normalizeProjects(PROJECTS)).client).toBe('Pappa Gohan');
+  });
 });
