@@ -46,3 +46,10 @@ it('stats', () => {
 it('NICHES has the 6 slugs in order', () => {
   expect(NICHES.map(n => n.slug)).toEqual(['restaurantes', 'videoclipes', 'eventos', 'saude', 'esportes', 'institucional']);
 });
+it('skips null/non-object entries without throwing', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  const ok = { title: 'T', niche: NICHES[0].slug, youtube: 'abcdefghijk' };
+  const out = normalizeProjects([null, undefined, 'x', ok]);
+  expect(out).toHaveLength(1); expect(out[0].title).toBe('T');
+  expect(warn).toHaveBeenCalledTimes(3); warn.mockRestore();
+});

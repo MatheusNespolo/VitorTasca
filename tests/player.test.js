@@ -20,3 +20,23 @@ it('cancel event (ESC) closes', () => {
   document.querySelector('dialog.player').dispatchEvent(new Event('cancel', { cancelable: true }));
   expect(document.querySelector('dialog.player')).toBeNull();
 });
+it('click on .player-frame (backdrop area) closes', () => {
+  openPlayer('abcdefghijk', 'X');
+  document.querySelector('.player-frame').click();
+  expect(document.querySelector('dialog.player')).toBeNull();
+});
+it('click on iframe wrapper child does not close; close button closes and restores focus', () => {
+  const opener = document.createElement('button'); document.body.append(opener); opener.focus();
+  openPlayer('abcdefghijk', 'X');
+  document.querySelector('iframe').click();
+  expect(document.querySelector('dialog.player')).not.toBeNull();
+  document.querySelector('.player-close').click();
+  expect(document.querySelector('dialog.player')).toBeNull();
+  expect(document.activeElement).toBe(opener);
+  expect(document.body.classList.contains('no-scroll')).toBe(false);
+});
+it('cancel removes no-scroll', () => {
+  openPlayer('abcdefghijk', 'X');
+  document.querySelector('dialog.player').dispatchEvent(new Event('cancel', { cancelable: true }));
+  expect(document.body.classList.contains('no-scroll')).toBe(false);
+});

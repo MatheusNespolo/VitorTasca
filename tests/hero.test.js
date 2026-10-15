@@ -20,3 +20,10 @@ it('clients marquee duplicates list for screen-reader-hidden loop', () => {
   expect(lists).toHaveLength(2); expect(lists[1].getAttribute('aria-hidden')).toBe('true');
   expect(lists[0].textContent).toBe('AB');
 });
+it('decorative photo (alt "") keeps video aria-label from label', () => {
+  const c = document.createElement('div');
+  renderHero(c, { image: './a.jpg', mp4: '', alt: '', label: 'Vitor' });
+  expect(c.querySelector('img').getAttribute('alt')).toBe('');
+  renderHero(c, { image: './a.jpg', mp4: './v.mp4', alt: '', label: 'Vitor' });
+  expect(c.querySelector('video').getAttribute('aria-label')).toBe('Vitor');
+});

@@ -25,11 +25,12 @@ function render() {
   renderGrid($('grid'), filterByNiche(projects, active), NICHES, p => openPlayer(p.youtubeId, p.client ? `${p.title} — ${p.client}` : p.title));
 }
 
-renderHero($('hero-media'), { image: config.heroImage, mp4: config.showreelMp4, alt: config.name });
+renderHero($('hero-media'), { image: config.heroImage, mp4: config.showreelMp4, alt: '', label: config.name });
 $('hero-name').textContent = config.name;
 $('hero-text').textContent = config.heroText;
 $('btn-showreel').addEventListener('click', () => openPlayer(config.showreelYoutubeId, `Showreel — ${config.name}`));
 $('btn-contact').href = wa;
+for (const id of ['btn-contact', 'contact-wa', 'wa-float']) { $(id).target = '_blank'; $(id).rel = 'noopener'; }
 $('about-photo').src = config.heroImage;
 $('about-text').textContent = config.heroText;
 const s = stats(projects, config);
@@ -39,7 +40,11 @@ for (const id of ['contact-wa', 'wa-float']) $(id).href = wa;
 $('contact-email').href = `mailto:${config.email}`;
 document.querySelectorAll('[data-ig]').forEach(a => { a.href = ig; a.target = '_blank'; a.rel = 'noopener'; });
 $('year').textContent = String(new Date().getFullYear());
-window.addEventListener('hashchange', () => { active = readNiche(location.hash, slugs); render(); });
+window.addEventListener('hashchange', () => {
+  const h = location.hash.slice(1); const n = readNiche(location.hash, slugs);
+  if (h && n === 'todos' && h.toLowerCase() !== 'todos') return;
+  active = n; render();
+});
 initSpotlight(document.body);
 render();
 if (active !== 'todos') $('trabalhos').scrollIntoView();

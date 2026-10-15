@@ -39,3 +39,9 @@ it('filters: Todos first, aria-pressed, change and focus restore', () => {
   renderFilters(c, NICHES.slice(0, 2), 'videoclipes', onChange);
   expect(document.activeElement.textContent).toBe('Videoclipes');
 });
+it('project with empty client uses title only', () => {
+  const c = document.createElement('div'); renderGrid(c, [{ ...p, title: 'Solo', client: '' }], NICHES, () => {});
+  expect(c.querySelector('.card').getAttribute('aria-label')).toBe('Assistir Solo');
+  expect(c.querySelector('img').alt).toBe('Solo');
+  expect(c.querySelector('.card-client').textContent).toBe('');
+});

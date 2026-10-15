@@ -6,6 +6,7 @@ export function normalizeProjects(raw, niches = NICHES) {
   const seen = new Map();
   const out = [];
   for (const r of raw) {
+    if (r === null || typeof r !== 'object') { console.warn('[projetos] item ignorado:', r); continue; }
     const title = String(r.title ?? '').trim();
     const niche = String(r.niche ?? '').trim();
     const youtubeId = parseYouTubeId(r.youtube);

@@ -16,7 +16,7 @@ export function openPlayer(youtubeId, title) {
     document.body.classList.remove('no-scroll'); opener?.focus?.();
   };
   closeBtn.addEventListener('click', close);
-  d.addEventListener('click', e => { if (e.target === d) close(); });
+  d.addEventListener('click', e => { if (e.target === d || e.target === frame) close(); });
   d.addEventListener('cancel', e => { e.preventDefault(); close(); });
   document.body.classList.add('no-scroll');
   d.showModal(); closeBtn.focus();
